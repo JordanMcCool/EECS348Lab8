@@ -18,6 +18,8 @@
         // basically, will be a guide for the matrix operations
     // will be referencing it as an aid for matrix operations
 // ??? what is the makefile for
+// also, alot of these comments are directed toward myself to help workflow by keeping me calm/stress relief; as well as future readability
+    // even if the comment wasnt useful professionally ive opted to leave them all intact
 
 
 #include <iostream>
@@ -77,6 +79,11 @@ std::vector<std::vector<int>> readMatrix(){ // since the function will need a ne
     int N; // will be used for the array size
     file >> N; // reads the first line of the file (the size) and stores it to N
 
+    if (N <= 0) { // handles an edge case -- from gpt debugging
+        std::cerr << "Invalid matrix size in file." << std::endl;
+        exit(EXIT_FAILURE); // ends
+    }
+
     std::vector<std::vector<int>> matrix(N, std::vector<int>(N)); 
     // from gpt - "creates a N x N matrix"
         // im just gonna trust it on that, not familiar enough with c++ to be able to read that
@@ -101,6 +108,8 @@ std::vector<std::vector<int>> readMatrix(){ // since the function will need a ne
     // but ++i is the PRE increment operator as opposed to POST
     // according to google, this is more efficient
 // neat !
+
+void printer(const std::vector<std::vector<int>>& matrix); // seems i need to do this to deal with compiler error? gpt
 
 // hybrid - gpt (marked) and Jordan
 void add_func(){ // add operation
@@ -140,8 +149,58 @@ void add_func(){ // add operation
         // prints the resulting matrix
 
 }
-void mult_func(){ // multiply operation
-    // SKIP THIS THING TOOK FOREVER IN (old_assignments) DO IT LATER
+
+
+// probably going to gpt the multiply function
+    // isnt actually hard, could probably do the warshall algorithm or SOMETHNG similar to it (see attached python files)
+    // i honestly just dont want to type it out
+    // and gpt can make it faster than I can
+// gpt
+    // sike its hybrid
+        // gpt didnt know what it was talking about and wanted to overcomplicate it
+            // which btw, if even I can tell its overcomplicated then it is DEFINITELY overcomplicated
+// comments
+// i feel like im insane? i KNOW ive made a matrix multiplier before but WHEN?
+    // the .py ones are boolean matrices, but i KNOW ive made one that was non boolean???
+    // regardless, process is still similar
+
+void mult_func(){ // multiply operation 
+    // SKIP; THIS THING TOOK FOREVER IN (old_assignments) DO IT LATER // old comment to myself, keeping it so you can see process
+    std::cout << "Enter the first matrix" << std::endl;
+    std::vector<std::vector<int>> mat1 = readMatrix(); // gets the first matrix
+    std::cout << "Enter the second matrix" << std::endl;
+    std::vector<std::vector<int>> mat2 = readMatrix(); // gets the second matrix
+
+    int N = mat1.size();
+    int M = mat2.size(); // this will be used to check that they are the same size, since these are square matrix
+
+    if (N != M){ // error check
+        std::cerr << "Matrix sizes do not match";
+        return;
+    }
+    std::vector<std::vector<int>> result(N, std::vector<int>(N, 0)); // creates another blank matrix
+
+    // below block is directly from gpt with a few extra comments
+        // rather simple, similar to the warshall method in previous work
+    //
+    // Matrix multiplication logic
+    for (int i = 0; i < N; ++i) {           // Iterate over rows of mat1
+        for (int j = 0; j < N; ++j) {       // Iterate over columns of mat2
+            for (int k = 0; k < N; ++k) {   // Iterate over row elements of mat1 and column elements of mat2
+                result[i][j] += mat1[i][k] * mat2[k][j]; // each entry is the cross of the row/column
+            }
+        }
+    } // is a cross product
+
+    // Print the result matrix
+    std::cout << "Resultant Matrix after multiplication:\n"; // i forgot you can do \n . thats embarassing
+            // you might notice multiple lines of just std::cout << std::endl becauase i forgot about \n
+            // COOOOOOOL
+    printer(result);
+    //
+    return; // ends
+
+
 
 }
 
@@ -177,11 +236,97 @@ void sum_diag_func(){ // sum diagonals function
     return;
 }
 
-void swap_rows_func(){ // swaps rows
+// jordan
+void swap_rows_func(){ // swaps rows // is basically copied from the column function
+    std::vector<std::vector<int>> mat1 = readMatrix(); // gets the matrix you want to use
+    int N = mat1.size();
+    std::vector<std::vector<int>> result(N, std::vector<int>(N, 0)); // creates another blank matrix
+
+    int row1; // these two lines will be used for loctions
+    int row2; // called it row by mistake, dont feel like changing it // ALSO, this is just copied straight from the next function
+        // i didnt want to hide that its literally the same as the swap columns function so i kept the comments the same
+        // point is: this function works almost exactly like the column function ( which i wrote prior to this one )
+    std::cout << "Enter column number of the FIRST row you want to swap";
+    std::cin >> row1;
+    if (row1 <= 0 || row1 > N){ // error check
+        std::cerr << "Invalid input";
+        return;
+    }
+    row1--; // adjusts the index value
+    std::cout << std::endl;
+    std::cout << "Enter column number of the SECOND row you want to swap";
+    std::cin >> row2;
+    
+    if (row2 <= 0 || row2 > N){ // error check
+        std::cerr << "Invalid input";
+        return;
+    }
+    row2--; // adjust to index value
+     // above lines get the column values and check if there would be an error
+    for (int i = 0; i < N; ++i){ // basically this builds a new matrix but just reads the swapped columns
+        if (i == row1){ // checks if its the row you want to swap
+            for (int j = 0; j < N; ++j){ // runs on that first condition
+                result[i][j] = mat1[row2][j];
+            }
+        }
+        if (i == row2){ // runs on second input row
+            for (int j = 0; j < N; ++j){
+             result[i][j] = mat1[row1][j];   
+            }
+        }
+        if (i != row1 && i != row2){ // runs on all other cases
+        for (int j = 0; j < N; ++j){ // runs if not the line
+                result[i][j] = mat1[i][j];
+            }
+        }
+    }
+    printer(result); // prints
+    return; // ends
 }
 
+// jordan
 void swap_col_func(){ // swaps columns
+    // basically this creates a copy of the input, but when its doing the row/column you tell it to swap it does the swap instead
 
+    std::vector<std::vector<int>> mat1 = readMatrix(); // gets the matrix you want to use
+    int N = mat1.size();
+    std::vector<std::vector<int>> result(N, std::vector<int>(N, 0)); // creates another blank matrix
+
+    int row1; // these two lines will be used for loctions
+    int row2; // called it row by mistake, dont feel like changing it
+    std::cout << "Enter column number of the FIRST column you want to swap";
+    std::cin >> row1;
+    
+    if (row1 <= 0 || row1 > N){ // error check
+        std::cerr << "Invalid input";
+        return;
+    }
+    row1--; // adjusts the index value
+    std::cout << std::endl;
+    std::cout << "Enter column number of the SECOND column you want to swap";
+    std::cin >> row2;
+    
+    if (row2 <= 0 || row2 > N){ // error check
+        std::cerr << "Invalid input";
+        return;
+    }
+    row2--; // adjust the index value
+     // above lines get the column values and check if there would be an error
+    for (int i = 0; i < N; ++i){ // basically this builds a new matrix but just reads the swapped columns
+        for (int j = 0; j < N; ++j){
+            if (j == row1){
+                result[i][j] = mat1[i][row2];
+            }
+            if (j == row2){
+                result[i][j] = mat1[i][row1];
+            }
+            if (j != row1 && j != row2){
+                result[i][j] = mat1[i][j];
+            }
+        }
+    }
+    printer(result); // prints the result
+    return; // end
 }
 
 // Jordan
@@ -201,9 +346,11 @@ void underminer(){ // updates a matrix value
     }
     if ( row_loc <= 0 ){
         std::cerr << "Invalid input"; // handles an error
+        return;
     }
     if ( row_loc > N ){
         std::cerr << "Invalid input"; // handles an error
+        return;
     }
     std::cout << "Enter the COLUMN of the value you are overwriting (1 to N)";
     std::cin >> col_loc;
@@ -254,6 +401,9 @@ int main(){
         "6.) Update matrix\n"
         "Enter selction(number):\n");
         scanf("%d", &choice); // locks in the choice
+        // ^^ using gpt as a debugger, says this is odd
+            // basically wrote main() a few days before the rest of this assignment and i DONT wanna rewrite it
+            // hopefully that doesnt cause issues :)))))))))))))
         if (choice == 1) { add_func() ;} //
         if (choice == 2) { mult_func() ;}
         if (choice == 3) { sum_diag_func() ;}
@@ -263,3 +413,22 @@ int main(){
     }
     return 0; // wont ever run, doesnt seem necessary
 }
+// starting debugging (mostly using gpt for time - i finished most of the assignment earlier this week, but put off finishing it)
+    // and now am low on time to actually finish it :))))))))))
+// gpt changes
+    // found mistake in row/column swapper
+        // i forgot to adjust the index values like how i do in underminer
+        // not a logic error, just forgot to do it
+        // i am always amazed to see how good gpt can be at spotting inconsistencies like that in code
+    // in the same functions ^^^
+        // "youre using bitwise or | and bitwise AND &"
+            // needs to be || and &&
+            // interesting
+    // found edge case issue in readMatrix if N is negative
+        // this one is interesting, because gpt wrote the original readMatrix function ( i was scarred it would take a long time to figure it out on my own so i had it write it - see comments)'
+        // interesting
+    // also, it saw my comment about the makefile and tried to explain it. thats kinda sweet BUT it is 10 PM and i havent eaten all day and im NOT hearing it
+        // i caved, im gonna try to get a makefile done in time :)
+
+// error testing
+    // printer function needs to be moved to the top? LAME
