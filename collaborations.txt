@@ -33,4 +33,5 @@ run: → Runs the compiled program when you type make run.
 // NOW we get to try the makefile :L
 wait how do i run the make file
 i love windows
+i cant figure this out cause makefiles dont seem to work on windows, im just going to assume it works
 
