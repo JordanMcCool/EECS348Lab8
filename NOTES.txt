@@ -1,0 +1,32 @@
+I do not understand what happened, but while working on LAB09 something about lab08 stopped working (did it ever even work right?)
+( i had orignally made it on a different system, do i have some version difference or something????)
+
+Only signifcant change was line 405 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // fix for issue ??? 4/9/2025
+which resolved the issue
+i reiterate that I do not understand WHY this stopped working:
+Likely options:
+    1.) While testing checked only that it ran correctly without obvious errors, not that the *OUTPUTS* themeselves were what they were supposed to be
+        But i dont understand why I would have done this since I made a specific test file for it to run on
+            - main() i think is the issue (or atleast, changing it fixed the issue bu that doesnt necessarily mean it was the issue)
+                main() was also written first
+                    - hence the switch from std::cout to printf()
+                    - possible that it worked fine initially but stopped after finishing the rest of the program
+
+        honestly this is the most likely option, that I tested it but not in a way that made it apparent that it wasnt working
+        that is so upsetting
+
+    2.) Overwrote a local version at somepoint
+        I tend to open all previous labs/assignments in vs code while making the project
+        and would have opened this lab specifically while working on assignment 6 (the sudoku puzzle) (a)
+        which used a similar structure ( 2d vector) to function
+        possible that while tabbing between them, overwrote part of base.cpp
+            - (b) also possible that it happen currently during lab09, because until RIGHT NOW (2-3 hours in) i had both files
+                named base.cpp - multiple points where i was in the wrong one
+
+There were a couple minor changes to formatting (just spaces on cout lines) which is actually what prompted me to double
+that lab08 was reading the lines correctly.
+( IF it is reason 2b, then this is why - i was specifically tabbing back and forth trying to remember how it readlines
+    and was specically altering small details back and forth)
+    - since this is ultimately a formatting cause ( I THINK ), then it could have been this
+i didnt bother to note these lines, as the changes were extremely minor
+i BEG, hands and KNEES, for mercy

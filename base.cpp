@@ -63,7 +63,8 @@
 std::vector<std::vector<int>> readMatrix(){ // since the function will need a new matrix each time, just going to do file name here
     //
     std::string user; // initializes the variable
-    std::cout << "Enter the name of the file WITH .txt extenstion ";
+    std::cout << "Enter the name of the file WITH .txt extenstion \n";
+    
     std::getline(std::cin, user); // stores that input as user
     // above code me - utilizing google for questions
         // gets a input file 
@@ -166,9 +167,9 @@ void add_func(){ // add operation
 
 void mult_func(){ // multiply operation 
     // SKIP; THIS THING TOOK FOREVER IN (old_assignments) DO IT LATER // old comment to myself, keeping it so you can see process
-    std::cout << "Enter the first matrix" << std::endl;
+    std::cout << "Enter the first matrix " << std::endl;
     std::vector<std::vector<int>> mat1 = readMatrix(); // gets the first matrix
-    std::cout << "Enter the second matrix" << std::endl;
+    std::cout << "Enter the second matrix " << std::endl;
     std::vector<std::vector<int>> mat2 = readMatrix(); // gets the second matrix
 
     int N = mat1.size();
@@ -337,7 +338,7 @@ void underminer(){ // updates a matrix value
     int col_loc;
     int N = mat1.size(); // initializes them
     std::cout << "DISCLAIMER NOTE: the first row and first column are value 1 (one). Do not enter 0" << std::endl; // disclaimer
-    std::cout << "Enter the ROW of the value you are overwriting (1 to N)";
+    std::cout << "Enter the ROW of the value you are overwriting (1 to N) ";
     std::cin >> row_loc; // assigns the value
     std::cout << std::endl; // i want extra space
     if ( row_loc == 0 ){ // handles the error if you dont do it right
@@ -352,7 +353,7 @@ void underminer(){ // updates a matrix value
         std::cerr << "Invalid input"; // handles an error
         return;
     }
-    std::cout << "Enter the COLUMN of the value you are overwriting (1 to N)";
+    std::cout << "Enter the COLUMN of the value you are overwriting (1 to N) ";
     std::cin >> col_loc;
     std::cout << std::endl; // formatting
     if ( col_loc == 0 ){ // handles the error if you dont do it right
@@ -401,6 +402,7 @@ int main(){
         "6.) Update matrix\n"
         "Enter selction(number):\n");
         scanf("%d", &choice); // locks in the choice
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // fix for issue ??? 4/9/2025
         // ^^ using gpt as a debugger, says this is odd
             // basically wrote main() a few days before the rest of this assignment and i DONT wanna rewrite it
             // hopefully that doesnt cause issues :)))))))))))))
