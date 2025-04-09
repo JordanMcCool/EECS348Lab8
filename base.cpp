@@ -63,7 +63,7 @@
 std::vector<std::vector<int>> readMatrix(){ // since the function will need a new matrix each time, just going to do file name here
     //
     std::string user; // initializes the variable
-    std::cout << "Enter the name of the file WITH .txt extenstion";
+    std::cout << "Enter the name of the file WITH .txt extenstion ";
     std::getline(std::cin, user); // stores that input as user
     // above code me - utilizing google for questions
         // gets a input file 
